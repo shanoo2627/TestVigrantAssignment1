@@ -6,6 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -23,8 +25,8 @@ public class MovieInformationValidation {
 		JavascriptExecutor j = (JavascriptExecutor)driver;
 		j.executeScript("window.scrollBy(0,"+y+")");
 		
-		String text = driver.findElement(By.xpath("//a[.='Release date']/following-sibling::div")).getText();
-		System.out.println("Release Date:-"+text);
+		String IMDBReleaseDate = driver.findElement(By.xpath("//a[.='Release date']/following-sibling::div")).getText();
+		System.out.println("Release Date:-"+IMDBReleaseDate);
 		
 		String imdbCountryText = driver.findElement(By.xpath("//button[.='Country of origin']/following-sibling::div")).getText();
 		System.out.println("Country of origin:-"+imdbCountryText);
@@ -34,8 +36,8 @@ public class MovieInformationValidation {
 		JavascriptExecutor j1 = (JavascriptExecutor)driver;
 		j1.executeScript("window.scrollBy(0,"+y1+")");
 		
-		String Text = driver.findElement(By.xpath("//tbody//div[.='Release date']/following::div[@class='plainlist']/descendant::li")).getText();
-		System.out.println("Release Date:-"+Text);
+		String WikiReleaseDate = driver.findElement(By.xpath("//tbody//div[.='Release date']/following::div[@class='plainlist']/descendant::li")).getText();
+		System.out.println("Release Date:-"+WikiReleaseDate);
 		
 		String wikiCountryText = driver.findElement(By.xpath("//tbody//td[.='India']")).getText();
 		System.out.println("Country:-"+wikiCountryText);
@@ -45,8 +47,13 @@ public class MovieInformationValidation {
 		if (imdbCountryText.equals(wikiCountryText)) {
 			System.out.println("Successfully----> TC is Pass");
 		} else {
-			System.out.println(" ----> TC is fail");
+			System.out.println(" ----> TC is fail");	
 		}
+		
+		Assert.assertEquals(imdbCountryText, wikiCountryText);
+		Reporter.log("Country is same",true);
+		Assert.assertNotEquals(IMDBReleaseDate, WikiReleaseDate);
+		Reporter.log("date format is diffrent",true);
 		
 		
 		
